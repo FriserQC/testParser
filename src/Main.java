@@ -25,18 +25,43 @@ public class Main {
             Document doc = builder.parse("src\\configuration.xml");
 
             //Récupération d'un ensemble d'éléments ayant le même nom
-            NodeList listeChemins = doc.getElementsByTagName("simulation").item(0).getChildNodes();;
-            for(int i=0; i<listeChemins.getLength(); i++){
-                Node chemins = listeChemins.item(i);
-                if(chemins.getNodeType()==Node.ELEMENT_NODE && chemins.getNodeName()=="chemins"){
-                    NodeList chemin = chemins.getChildNodes();
-                    for (int j=0;j<chemin.getLength();j++){
-                        Node donnees = chemin.item(j);
-                        if(donnees.getNodeType()==Node.ELEMENT_NODE){
-                            Element elementDonnee = (Element) donnees;
-                            donneesChemin.add(new int[]{Integer.parseInt(elementDonnee.getAttribute("de")),Integer.parseInt(elementDonnee.getAttribute("vers"))});
+            NodeList usines = doc.getElementsByTagName("metadonnees").item(0).getChildNodes();
+            for(int i=0; i<usines.getLength(); i++){
+                Node usine = usines.item(i);
+                if(usine.getNodeType()==Node.ELEMENT_NODE && usine.getNodeName()=="usine"){
+                    NodeList tUsine = usine.getChildNodes();
+                    Element typeUsine = (Element) usine;
+                    System.out.println(typeUsine.getAttribute("type"));
+                    for(int j=0; j<tUsine.getLength();j++){
+                        Node donnees = tUsine.item(j);
+                        if(donnees.getNodeType()==Node.ELEMENT_NODE && donnees.getNodeName()=="icones"){
+                            NodeList icones = donnees.getChildNodes();
+                            System.out.println(donnees.getNodeName());
+                            for(int k=0; k<icones.getLength();k++){
+                                Node icone = icones.item(k);
+                                if(icone.getNodeType()==Node.ELEMENT_NODE){
+                                    Element anIcone = (Element) icone;
+                                    System.out.println(anIcone.getAttribute("type"));
+                                    System.out.println(anIcone.getAttribute("path"));
+                                }
+                            }
+                        } if (donnees.getNodeType()==Node.ELEMENT_NODE && donnees.getNodeName()=="entree") {
+                            Element entree = (Element) donnees;
+                            System.out.println(entree.getAttribute("type"));
+                            if(entree.getAttribute("capacite")==""){
+                                System.out.println(entree.getAttribute("quantite"));
+                            }
+                            else{
+                                System.out.println(entree.getAttribute("capacite"));
+                            }
+                        } if (donnees.getNodeType()==Node.ELEMENT_NODE && donnees.getNodeName()=="sortie") {
+                            Element sortie = (Element) donnees;
+                            System.out.println(sortie.getAttribute("type"));
+                        } if(donnees.getNodeType()==Node.ELEMENT_NODE && donnees.getNodeName()=="interval-production"){
+                            System.out.println("interval-production " + donnees.getTextContent());
                         }
                     }
+
                 }
             }
 
